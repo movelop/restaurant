@@ -23,6 +23,7 @@
 
 .item:last-child {
     justify-content: flex-end;
+    cursor: pointer;
 }
 
 .callButton {
@@ -53,6 +54,7 @@
     align-items: center;
     list-style: none;
     color: white;
+    cursor: pointer;
 }
 
 .listItem {
