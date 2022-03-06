@@ -12,7 +12,7 @@ const Login = () => {
 
   const handleClick = async() => {
     try {
-      await axios.post('https://restaurant-dun-phi.vercel.app/api/login', {
+      await axios.post('http://localhost:3000/api/login', {
         username,
         password,
       })
@@ -42,7 +42,7 @@ const Login = () => {
         <button onClick={handleClick} className={styles.button}>
           Sign In
         </button>
-        {error && <span className={styles.error}>{error.response?.data}</span>}
+        {error && <span className={styles.error}>{error.response.data}</span>}
       </div>
     </div>
   )
