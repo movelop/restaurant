@@ -1,8 +1,10 @@
+import axios from 'axios';
 import Image from 'next/image';
+import NumberFormat from 'react-number-format';
 import styles from '../../styles/Order.module.css'
 
-const Order = () => {
-    const status = 0;
+const Order = ({ order }) => {
+    const status = order.status;
 
     const statusClass = (index) => {
         if (index - status < 1) return styles.done;
@@ -25,16 +27,23 @@ const Order = () => {
                         <tbody>
                             <tr className={styles.tr}>
                                 <td>
-                                    <span className={styles.id}>129837819237</span>
+                                    <span className={styles.id}>{order._id}</span>
                                 </td>
                                 <td>
-                                    <span className={styles.name}>John Doe</span>
+                                    <span className={styles.name}>{order.customer}</span>
                                 </td>
                                 <td>
-                                    <span className={styles.address}>Elton st. 212-33 LA</span>
+                                    <span className={styles.address}>{order.address}</span>
                                 </td>
                                 <td>
-                                    <span className={styles.total}>N7999.98</span>
+                                    <span className={styles.total}>
+                                    <NumberFormat
+                                        value={order.total}
+                                        displayType={"text"}
+                                        thousandSeparator={true}
+                                        prefix={"$"}
+                                    />
+                                    </span>
                                 </td>
                             </tr>
                         </tbody>
@@ -99,13 +108,31 @@ const Order = () => {
                 <div className={styles.wrapper}>
                 <h2 className={styles.title}>CART TOTAL</h2>
                 <div className={styles.totalText}>
-                    <b className={styles.totalTextTitle}>Subtotal:</b>N7999.96
+                    <b className={styles.totalTextTitle}>Subtotal:</b>
+                        <NumberFormat
+                            value={order.total}
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            prefix={"$"}
+                        />
                 </div>
                 <div className={styles.totalText}>
-                    <b className={styles.totalTextTitle}>Discount:</b>N0.00
+                    <b className={styles.totalTextTitle}>Discount:</b>
+                    <NumberFormat
+                        value={0}
+                        displayType={"text"}
+                        thousandSeparator={true}
+                        prefix={"$"}
+                    />
                 </div>
                 <div className={styles.totalText}>
-                    <b className={styles.totalTextTitle}>Total:</b>N7999.96
+                    <b className={styles.totalTextTitle}>Subtotal:</b>
+                    <NumberFormat
+                        value={order.total}
+                        displayType={"text"}
+                        thousandSeparator={true}
+                        prefix={"$"}
+                    />
                 </div>
                 <button disabled className={styles.button}>
                     PAID
@@ -114,6 +141,13 @@ const Order = () => {
             </div>
         </div>
     )
-}
+};
+
+export const getServerSideProps = async ({ params }) => {
+    const res = await axios.get(`http://localhost:3000/api/orders/${params.id}`);
+    return {
+      props: { order: res.data },
+    };
+};
 
 export default Order

@@ -8,13 +8,32 @@ import {
     PayPalButtons,
     usePayPalScriptReducer
 } from "@paypal/react-paypal-js";
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import { reset } from '../redux/cartRedux';
+import OrderDetail from '../components/OrderDetail';
 
 const Cart = () => {
+    const cart = useSelector(state=> state.cart);
     const [open, setOpen] = useState(false);
-    const amount = "2";
+    const [cash, setCash] = useState(false);
+    const amount = cart.total;
     const currency = "USD";
     const style = {"layout":"vertical"};
-    const cart = useSelector(state=> state.cart);
+    const dispatch = useDispatch()
+    const router = useRouter();
+    
+    const createOrder = async (data) => {
+        try {
+            const res = await axios.post('http://localhost:3000/api/orders', data)
+            if(res.status === 201) {
+                dispatch(reset());
+                router.push(`/orders/${res.data._id}`);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const ButtonWrapper = ({ currency, showSpinner }) => {
         // usePayPalScriptReducer can be use only inside children of PayPalScriptProviders
@@ -57,8 +76,14 @@ const Cart = () => {
                             });
                     }}
                     onApprove={function (data, actions) {
-                        return actions.order.capture().then(function () {
-                            // Your code here after capture the order
+                        return actions.order.capture().then(function (details) {
+                            const shippingDetails = details.purchase_units[0].shipping;
+                            createOrder({
+                                customer: shippingDetails.name.full_name,
+                                address: shippingDetails.address.address_line_1,
+                                total: cart.total,
+                                method: 1,
+                            })
                         });
                     }}
                 />
@@ -110,7 +135,7 @@ const Cart = () => {
                                 className={styles.price}
                                 displayType={'text'}
                                 thousandSeparator={true}
-                                prefix={'N'}
+                                prefix={'$'}
                                 renderText={(value, props) => <span {...props}>{value}</span>}
                             />
                         </td>
@@ -123,7 +148,7 @@ const Cart = () => {
                                 className={styles.total}
                                 displayType={'text'}
                                 thousandSeparator={true}
-                                prefix={'N'}
+                                prefix={'$'}
                                 renderText={(value, props) => <span {...props}>{value}</span>}
                             />
                         </td>
@@ -141,7 +166,7 @@ const Cart = () => {
                         value={cart.total}
                         displayType={"text"}
                         thousandSeparator={true}
-                        prefix={"N"}
+                        prefix={"$"}
                     />
                 </div>
                 <div className={styles.totalText}>
@@ -150,7 +175,7 @@ const Cart = () => {
                         value={0}
                         displayType={"text"}
                         thousandSeparator={true}
-                        prefix={"N"}
+                        prefix={"$"}
                     />
                 </div>
                 <div className={styles.totalText}>
@@ -159,15 +184,17 @@ const Cart = () => {
                         value={cart.total}
                         displayType={"text"}
                         thousandSeparator={true}
-                        prefix={"N"}
+                        prefix={"$"}
                     />
                 </div>
                 {open? (
                     <div className={styles.paymentMethods}>
-                        <button className={styles.payButton}>Pay On Delivery</button>
+                        <button className={styles.payButton} onClick = { () => setCash(true)}>
+                            Pay On Delivery
+                        </button>
                         <PayPalScriptProvider
                             options={{
-                                "client-id": "test",
+                                "client-id": "AZbW_AK4-T9rLuTOeSaojnveWxVxuHTZ3pvHXrsDYcQmomCIah3Z5KFr6UOFP7C-LJKGamf8JYnR_r7w",
                                 components: "buttons",
                                 currency: "USD",
                                 "disable-funding": "credit,card,p24",
@@ -184,11 +211,10 @@ const Cart = () => {
                     <button onClick={() => setOpen(true)} className={styles.button}>
                         CHECKOUT NOW!
                     </button>
-                )}
-                
-                
+                )}       
             </div>
         </div>
+        {cash && <OrderDetail total={cart.total} createOrder={createOrder} setCash = {setCash}/>}
     </div>
   )
 }

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { addProduct } from '../../redux/cartRedux';
+import NumberFormat from 'react-number-format';
 
 const Product = ({ pizza }) => {
     const [price, setPrice] = useState(pizza.prices[0]);
@@ -48,7 +49,14 @@ const Product = ({ pizza }) => {
         </div>
         <div className={styles.right}>
             <h1 className={styles.title}>{pizza.name}</h1>
-            <span className={styles.price}>N{price}</span>
+            <span className={styles.price}>
+                <NumberFormat
+                    value={price}
+                    displayType={"text"}
+                    thousandSeparator={true}
+                    prefix={"$"}
+                />
+            </span>
             <p className={styles.desc}>{pizza.desc}</p>
             <h3 className={styles.choose}>Choose the size</h3>
             <div className={styles.sizes}>
@@ -76,7 +84,14 @@ const Product = ({ pizza }) => {
                         className={styles.checkbox}
                         onChange={(e) => handleChange(e, option)}
                     />
-                    <label htmlFor="double">{option.text}</label>
+                    <label htmlFor="double">{option.text} :
+                        <NumberFormat
+                            value={option.price}
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            prefix={"$"}
+                        />
+                    </label>
                     </div>
                 ))}
             </div>

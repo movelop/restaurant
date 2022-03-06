@@ -1,0 +1,95 @@
+.container {
+    padding: 50px;
+    display: flex;
+}
+
+.item {
+    flex: 1;
+}
+
+.table, .table2 {
+    width: 100%;
+    border-spacing: 20px;
+    text-align: center;
+}
+
+.button {
+    border: none;
+    border-radius: 3px;
+    color: white;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.button:first-child {
+    background-color: teal;
+    margin-right: 10px;
+}
+  
+.button:last-child {
+    background-color: crimson;
+}
+
+@media screen and (max-width: 980px) {
+    .container {
+        flex-direction: column;
+        padding: 10px;
+        width: 100%;
+    }
+    
+    .button:first-child {
+        margin-bottom: 5px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .table {
+        text-align: start;
+    }
+
+    .table2 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+     .trTitle2 {
+        display: none;
+    }
+
+    .table2 .tr {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .action {
+        margin-top: 5px;
+    }
+
+    .id::before {
+        content: "Order ID: ";
+        font-weight: 500;
+    }
+    .customer::before {
+        content: "Customer: ";
+        font-weight: 500;
+    }
+
+    .total::before {
+        content: "Total: ";
+        font-weight: 500;
+    }
+
+    .method::before {
+        content: "Method: ";
+        font-weight: 500;
+    }
+    .status::before {
+        content: "Status: ";
+        font-weight: 500;
+    }
+}
