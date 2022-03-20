@@ -12,11 +12,12 @@ const Navbar = () => {
     const { quantity } = useSelector(state => state.cart);
   return (
     <nav className= {styles.container}>
-        <div className={styles.logo}>
-            <Link href="/" passHref>    
+        <Link href="/" passHref> 
+            <div className={styles.logo}>
                 <Image src='/img/logo.png' alt='logo' width={200} height={99} />
-            </Link>
-        </div>
+            </div>
+        </Link>
+
         <ul className={styles.links}>
                 <Link href="/" passHref>
                     <li className={styles.listItem}>Home</li>

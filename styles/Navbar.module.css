@@ -123,7 +123,7 @@
     right: 0;
     z-index: 5;
     padding: 1rem;
-    width: 80%;
+    width: 60%;
     height: 100vh;
     display: flex;
     justify-content: flex-end;
@@ -159,7 +159,7 @@
 }
 
 .toggle li a {
-    font-size: 1rem;
+    font-size: 1.5rem;
     font-weight: 500;
     display: flex;
     justify-content: center;
@@ -168,9 +168,9 @@
     text-transform: uppercase;
 }
 
-.toggle li a:hover {
+/* .toggle li a:hover {
     font-size: 1.1rem;
-}
+} */
 
 
 @media screen and (min-width: 2000px) {
@@ -180,13 +180,13 @@
     }
 }
 
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 980px) {
     .menu {
         display: none;
     }
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 980px) {
     .container{
         padding: 0 20px;
     }
