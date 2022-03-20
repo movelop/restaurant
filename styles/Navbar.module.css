@@ -184,6 +184,10 @@
     .menu {
         display: none;
     }
+
+    .togle {
+        display: none;
+    }
 }
 
 @media screen and (max-width: 980px) {
